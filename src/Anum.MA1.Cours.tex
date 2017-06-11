@@ -1,0 +1,533 @@
+%        File: Anum.MA1.Cours.tex
+%     Created: Mit Sep 30 05:00  2015 C
+% Last Change: Mit Sep 30 05:00  2015 C
+%
+\documentclass[a4paper, 11pt]{report}
+
+\usepackage[french]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{hyperref}
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{physics}
+
+\input{macros_math}
+\input{include_thm}
+
+\title{Analyse numérique}
+\author{Danny Willems}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\chapter{Equations différentielles ordinaires}
+
+\section{Définitions}
+	\begin{definition} [Equation différentielle ordinaire]
+		Soit $\Omega$ un ouvert de $\real \cartprod E$.
+
+		Soit $f : \Omega \rightarrow E$ une application.
+
+		On appelle \textbf{équation différentielle ordinaire d'ordre 1} une équation
+		du type
+		\begin{equation}
+			\frac{dx}{dt} = f(t, x)
+		\end{equation}
+		noté plus souvent
+		\begin{equation}
+			\dot{x} = f(t, x)
+		\end{equation}
+	\end{definition}
+
+   % On remarque que si on explicite $\vec{x}$ en $(x_{1}, \dots, x_{n})$ et $f(t,
+	%\vec{x})$ en $(f_{1}(t, \vec{x}), \dots, f_{n}(t, \vec{x}))$, on peut écrire, en
+	%identifiant composante par composante, une
+	%équation différentielle d'ordre 1 de la manière suivante
+	%\begin{align}
+		%\dot{x_{1}} & = f_{1}(t, \vec{x}) \\
+		%& \dots \\
+		%\dot{x_{n}} & = f_{n}(t, \vec{x})
+	%\end{align}
+
+	%On dit que ce système est \textbf{sous forme normale} car il se résout par
+	%rapport aux dérivées. % ???
+
+	%On obtient alors un \textbf{système d'équations différentielles ordinaires
+	%d'ordre 1}. Résoudre ce système revient alors à résoudre l'équation
+	%différentielle ordinaire d'ordre 1 de départ.
+
+	\begin{definition} [Solution d'une équation différentielle ordinaire d'ordre
+		$1$]
+		Soit $\Omega$ un ouvert de $\real \cartprod E$.
+
+		Soit $f : \Omega \rightarrow E$ une application et
+		\begin{equation}
+			\label{eq:def_sol_eq_diff}
+			\frac{dx}{dt} = f(t, x)
+		\end{equation}
+		une équation différentielle ordinaire d'ordre 1.
+
+		On appelle \textbf{solution de l'équation \ref{eq:def_sol_eq_diff}} toute
+		fonction
+		\begin{equation}
+			x : I \rightarrow E
+		\end{equation}
+		où $I$ est un intervalle non vide de $\real$
+		tel que pour tout $t \in I$,
+		\begin{equation}
+			(t, x(t)) \in \Omega
+		\end{equation}
+		et
+		\begin{equation}
+			\dot{x}(t) = f(t, x(t))
+		\end{equation}
+		où
+		\begin{equation}
+			\dot{x}(t) = \dv{x}{t}
+		\end{equation}
+
+		L'ensemble
+		\begin{equation}
+			\GSsetDef{(t, x(t))}{t \in I}
+		\end{equation}
+		est appelé \textbf{trajectoire de la solution $x$ de
+		l'équation \ref{eq:def_sol_eq_diff}} ou \textbf{espace de mouvement}.
+
+		L'ensemble
+		\begin{equation}
+			\GSsetDef{x(t)}{t \in I}
+		\end{equation}
+		est appelé \textbf{orbite de la solution $x$ de
+		l'équation \ref{eq:def_sol_eq_diff}} ou \textbf{espace de phase}.
+	\end{definition}
+
+	Remarquons que l'intervalle d'une solution peut être quelconque
+	topologiquement parlant. Il peut être ouvert, fermé, ou aucun des deux.
+
+	\begin{definition} [Problème de Cauchy]
+		Soit $\Omega$ un ouvert de $\real \cartprod E$.
+
+		Soient $f : \Omega \rightarrow E$ une application,
+		\begin{equation}
+			\label{eq:def_cauchy_sol_diff}
+			\frac{dx}{dt} = f(t, x)
+		\end{equation}
+		une équation différentielle ordinaire d'ordre 1 et $(t_{0},
+		x_{0})$ un point de $\Omega$.
+
+		On appelle \textbf{problème de Cauchy de l'équation
+		\ref{eq:def_cauchy_sol_diff} relativement aux conditions initiales
+		$(t_{0}, x_{0})$} la recherche des solutions
+		\begin{equation}
+			x : I \rightarrow E
+		\end{equation}
+		de l'équation \ref{eq:def_cauchy_sol_diff} tel que
+		\begin{enumerate}
+			\item $t_{0} \in I$
+			\item $\dot{x}(t_{0}) = f(t_{0}, x_{0})$
+		\end{enumerate}
+	\end{definition}
+
+	% Interprétation géométrique
+
+	Nous allons donner la définition d'une équation différentielle ordinaire
+	d'orde $n$. La définition d'équation différentielle d'ordre $1$ que nous
+	avons donnée actuellement ne fait intervenir que la dérivée première d'une
+	fonction $x$ et une dépendance par rapport à cette même fonction
+	$x$ dans la fonction $f$.
+
+	La dérivée de la fonction $x$ est alors donnée par la fonction
+	$f$.
+
+	Il est naturel de généraliser cette définition pour la $n$-ième dérivée.
+
+	\begin{definition} [Equation différentielle ordinaire d'ordre $n$]
+		Soit $n \in \naturel^{> 0}$ et soit $\Omega$ un ouvert de $\real
+		\cartprod E$.
+
+		Soit $f : \Omega \rightarrow \real$.
+
+		On appelle \textbf{équation différentielle ordinaire d'ordre $n$} ou
+		\textbf{équation différentielle ordinaire à dérivée $n$-ième explicitée}
+		une équation du type
+		\begin{equation}
+			y^{(n)} = f(t, y^{(n - 1)}, y^{(n - 2)}, \dots, y^{(1)}, y^{(0)})
+		\end{equation}
+
+		où
+		\begin{equation}
+			y^{(0)} = y
+		\end{equation}
+		et
+		\begin{equation}
+			y^{(k)} = \dv[k]{y}{t}
+		\end{equation}
+	\end{definition}
+
+	Remarquons que la définition d'une équation différentielle ordinaire
+	d'ordre $n$ est définie par une fonction $f$ qui va de $\Omega$ dans
+	$\real$, et non dans $E$ comme dans le cas d'une équation
+	différentielle ordinaire d'ordre $1$.
+
+	De la même manière que l'on a défini une solution d'une équation
+	différentielle ordinaire d'ordre $1$, on définit la solution d'une équation
+	différentielle ordinaire d'ordre $n$ de la façon suivante:
+
+	\begin{definition} [Solution d'une équation différentielle ordinaire d'ordre
+		$n$]
+		Soit $n \in \naturel^{> 0}$ et soit $\Omega$ un ouvert de $\real
+		\cartprod \real^{n}$.
+
+		Soit $f : \Omega \rightarrow \real^{n}$ une application et
+		\begin{equation}
+			y^{(n)} = f(t, y^{(n - 1)}, y^{(n - 2)}, \dots, y^{(1)}, y^{(0)})
+			\label{eq:def_eq_diff_n}
+		\end{equation}
+		une équation différentielle ordinaire d'ordre $n$.
+
+		On appelle \textbf{solution de l'équation \ref{eq:def_eq_diff_n}} toute
+		fonction
+		\begin{equation}
+			y : I \rightarrow \real
+		\end{equation}
+		$n$ fois dérivable où $I$ est un intervalle non vide de $\real$ tel que
+		pour tout $t \in I$,
+		\begin{enumerate}
+			\item $(t, y^{(n - 1)}(t), y^{(n - 2)}(t), \dots, y^{(1)}(t),
+				y^{(0)}(t)) \in \Omega$
+				\label{eq:def_sol_eq_diff_set}
+			\item $y^{(n)}(t) = f(t, y^{(n - 1)}(t), y^{(n - 2)}(t), \dots,
+				y^{(1)}(t), y^{(0)}(t))$
+				\label{eq:def_sol_eq_diff_egality}
+		\end{enumerate}
+	\end{definition}
+
+	Remarquons que l'intervalle d'une solution peut être quelconque
+	topologiquement parlant. Il peut être ouvert, fermé, ou aucun des deux. De
+	plus, cette fois-ci, la définition d'une solution est une fonction allant de
+	$I$ dans $\real$, non plus dans $E$
+
+	L'étude des équations différentielles ordinaire d'ordre $n$ peut sembler
+	difficile à première vue car nous devons vérifier que les dérivées
+	successives d'une solution $y$ vérifient bien l'égalité
+	\ref{eq:def_sol_eq_diff_egality}.
+
+	Nous allons montrer une première proposition qui nous montre que l'étude des
+	solutions d'une équation différentielle ordinaire d'ordre $n$ peut revenir à
+	l'étude d'un système d'équations différentielles ordinaires d'ordre $1$.
+
+	\begin{proposition}
+		Soient $\Omega$ un ouvert de $\real \cartprod \real^{n}$, $f :
+		\Omega \rightarrow \real$ et
+		\begin{equation}
+			y^{(n)} = f(t, y^{(n - 1)}, y^{(n - 2)}, \dots, y^{(1)}, y^{(0)})
+			\label{eq:def_eq_diff_n_prop_simplify}
+		\end{equation}
+		une équation différentielle ordinaire d'ordre $n$.
+		Alors il existe un système d'équation différentielle d'ordre $1$ dont
+		l'ensemble de solutions est de même cardinal que l'ensemble de solution
+		de l'équation \ref{eq:def_eq_diff_n_prop_simplify}.
+	\end{proposition}
+
+	\ifdefined\outputproof
+	\begin{proof}
+
+	\end{proof}
+	\fi
+
+\section{Fonctions lipschitziennes}
+
+	\begin{definition} [Lipschitzienne]
+		Soit $\Omega$ un ouvert de $\real \cartprod E$.
+
+		Soit $f : \Omega \rightarrow E$ une application.
+		On dit que $f$ est \textbf{lipschitzienne par rapport à la deuxième
+		variable} s'il existe $k \geq 0$ tel que
+		\begin{equation}
+			\forall (t, x_{1}) \in \Omega, \, \forall (t, x_{2}) \in \Omega, \,
+			\norm{f(t, x_{1}) - f(t, x_{2})} \leq k \norm{x_{1} - x_{2}}
+		\end{equation}
+	\end{definition}
+
+	\begin{definition}
+		Soit $\Omega$ un ouvert de $\real \cartprod E$.
+
+		Soit $f : \Omega \rightarrow E$ une application.
+
+		On dit que $f$ est \textbf{localement lipschitzienne par rapport à la
+		deuxième variable} s'il existe $k \geq 0$ tel qu'en tout point $(t, x)$ de $\Omega$, il existe un
+		voisinage de $(t, x)$ sur lequel $f$ est $k$-lipschitzienne.
+	\end{definition}
+
+	Montrons quelques propriétés que les fonctions lipschitziennes et localement
+	lipschitziennes entretiennent avec les fonctions continues.
+
+	\begin{proposition}
+		Soit $\Omega$ un ouvert de $\real \cartprod E$ et soit $f :
+		\Omega \rightarrow E$ une application.
+
+		Si $f$ est lipschitzienne par rapport à la deuxième variable, alors $f$
+		est uniformément continue par rapport à la deuxième variable.
+	\end{proposition}
+
+	\ifdefined\outputproof
+	\begin{proof}
+
+	\end{proof}
+	\fi
+
+	\begin{remarque}
+		Si une fonction $f : \Omega \rightarrow E$ est lipschitzienne
+		par rapport à la deuxième variable, cela n'implique pas nécéssairement
+		qu'elle soit continue par rapport à la première variable et, par
+		conséquence, uniformément continue par rapport à la première variable.
+		% TODO: chercher exemple
+	\end{remarque}
+
+	\begin{proposition}
+		Soit $\Omega$ un ouvert de $\real \cartprod E$ et $f : \Omega
+		\rightarrow E$ une application tel que les dérivées partielles
+		$\pdv{f}{x}$ par rapport à $x$ existe et sont continues.
+
+		Alors, $f$ est localement lipschitzienne dans $\Omega$.
+	\end{proposition}
+
+	\ifdefined\outputproof
+	\begin{proof}
+		Soit $(t_{0}, x_{0}) \in \Omega$. Comme $\Omega$ est ouvert, il
+		existe une boule fermée $B[ (t_{0}, x_{0}), r]$ de rayon $r$ et de
+		centre $(t_{0}, x_{0})$ contenue dans $\Omega$.
+
+		Par hypothèse, les dérivées premières $\pdv{f}{x}$ sont continues.
+		Donc $\pdv{f}{x}$ sont bornées sur cette boule $B[ (t_{0},
+		x_{0}), r]$.
+	\end{proof}
+	\fi
+
+	\begin{proposition}
+		Soit $\Omega$ un ouvert convexe de $\real \cartprod E$ et soit
+		\begin{equation}
+			f : \Omega \rightarrow E : (t, x) \rightarrow f(t,
+			x)
+		\end{equation}
+		une application tel que les dérivées
+		partielles $\pdv{f}{x}$ sont continues par rapport à $x$.
+		LASSE.
+		\begin{enumerate}
+			\item $f$ est lipschitzienne.
+			\item Les dérivées partielles $\pdv{f}{x}$ sont bornées.
+		\end{enumerate}
+	\end{proposition}
+
+	\ifdefined\outputproof
+	\begin{proof}
+
+	\end{proof}
+	\fi
+
+\section{Tonneaux de sécurité}
+
+\begin{definition}
+	Un tonneau de centre $(t_{0}, x_{0})$ est un ensemble $I \cartprod B
+	\subseteq \real \cartprod E$ où
+	\begin{equation}
+		I = \GSsetDef{t \in \real}{\abs{t - t_{0}} < l}
+	\end{equation}
+	et
+	\begin{equation}
+		B = \GSsetDef{x \in E}{\GSnorme{x - x_{0}} < M}
+	\end{equation}
+
+	La valeur $2l$ est appelée \textbf{longueur du tonneau} et $r$ \textbf{le
+	rayon du tonneau}.
+\end{definition}
+
+\begin{definition}
+	Soit $\Omega$ un ouvert de $\real \cartprod E$ et soit $f : \Omega
+	\rightarrow E$ une application.
+
+	Soient $(t_{0}, x_{0})$ un point de $\Omega$ et $T$ un tonneau de
+	centre $(t_{0}, x_{0})$.
+
+	$T$ est \textbf{un tonneau de sécurité de centre $(t_{0}, x_{0})$
+relativement à $f$} si $T$ est contenu dans $\Omega$ et si $r = Ml$ où $M$ est
+une borne supérieure de $\GSnormeDef{f(t, x)}{E}$ où $(t, x)$ parcourt $T$.
+
+	$T$ est \textbf{un tonneau lipschitzien relativement à $f$} si $f$ est
+	lipschitzienne sur $T$.
+\end{definition}
+
+\begin{proposition}
+	Soit $\Omega$ un ouvert de $\real \cartprod E$ et soit $f : \Omega
+	\rightarrow E$ une application continue et localement lipschitizienne en la
+	deuxième variable.
+
+	Soient $(t_{0}, x_{0})$ un point de $\Omega$ et $T$ un tonneau de
+	centre $(t_{0}, x_{0})$ contenue dans $\Omega$.
+
+	Alors $T$ est contenu dans un tonneau de sécurité de centre $(t_{0},
+	x_{0})$.
+\end{proposition}
+
+\ifdefined\outputproof
+\begin{proof}
+
+\end{proof}
+\fi
+
+\begin{proposition}
+	Soit $\Omega$ un ouvert de $\real \cartprod E$ et soit $f : \Omega
+	\rightarrow E$ une application continue et localement lipschitzienne.
+
+	Soit $(t_{0}, x_{0})$ un point de $\Omega$.
+
+	Alors il existe un tonneau de sécurité lipschitzien de centre $(t_{0},
+	x_{0})$ relativement à $f$.
+\end{proposition}
+
+\ifdefined\outputproof
+\begin{proof}
+
+\end{proof}
+\fi
+
+\section{Existence et unicité locales de solutions}
+
+Posons $\Omega$ un ouvert de $\real \cartprod E$ et $f : \Omega
+\rightarrow E$ une application localement lipschitzienne en
+$x$ et continue.
+
+Soit
+\begin{equation}
+	\dot{x} = f(t, x)
+	\label{eq:existence_sol}
+\end{equation}
+l'équation différentielle ordinaire d'ordre un régie par $f$.
+
+Nous allons montrer le théorème suivant:
+
+\begin{theorem}
+	Soit $(t_{0}, x_{0}) \in \Omega$.
+
+	Alors il existe un intervalle $I \subseteq \real$ et une solution $x :
+	I \rightarrow E$ de \ref{eq:existence_sol} tel que $x(t_{0}) =
+	x_{0}$.
+
+	De plus, pour tout autre intervalle $J \subseteq I \subseteq \real$ avec
+	$t_{0} \in J$ et pour toute autre solution $y : J \rightarrow
+	E$ tel que $y(t_{0}) = x_{0}$, on a
+	\begin{equation}
+		\forall t \in J, x(t) = y(t)
+	\end{equation}
+\end{theorem}
+
+Cependant, avant de montrer ce dernier, nous allons démontrer des propositions
+qui nous permettront de conclure sur ce théorème.
+
+\begin{proposition}
+	Soit $(t_{0}, x_{0}) \in \Omega$ et soit $I$ un intervalle de $\real$ tel que $t_{0}
+	\in I$.
+
+	Soit $x : I \rightarrow E$ une fonction tel que son graphe est $\Omega$.
+
+	Les assertions suivantes sont équivalentes:
+	\begin{enumerate}
+		\item $x$ est solution de l'équation \ref{eq:existence_sol} et $x(t_{0})
+			= x_{0}$
+		\item $x$ est continue et pour tout $t \in I$,
+			\begin{equation}
+				x(t) = x_{0} + \int_{t_{0}}^{t} f(\tau, x(\tau)) d\tau
+			\end{equation}
+	\end{enumerate}
+\end{proposition}
+
+\ifdefined\outputproof
+\begin{proof}
+
+\end{proof}
+\fi
+
+\begin{proposition}
+	Soient $I$ un intervalle de $\real$ et $T = I \cartprod B$ un tonneau de
+	sécurité de lipschitzien de $f$.
+
+	Soit $C(I)$ l'ensemble des fonctions $x
+	: I \rightarrow E$ continue et dont le graphe est dans $T$.
+
+	Alors $C(I)$ est un espace métrique complet pour la métrique de la
+	convergence uniforme.
+\end{proposition}
+
+\ifdefined\outputproof
+\begin{proof}
+
+\end{proof}
+\fi
+
+\begin{proposition}
+	Soit $C(I)$ l'ensemble défini précédemment.
+
+	Alors la fonction
+	\begin{equation}
+		\phi : C(I) \rightarrow C(I)
+	\end{equation}
+	tel que pour tout $x \in C(I)$ et pour tout $t \in I$,
+	\begin{equation}
+		\phi(x)(t) = x_{0} + \int_{t_{0}}^{t} f(\tau, x(\tau)) d\tau
+	\end{equation}
+	est bien définie et est contractante.
+\end{proposition}
+
+\ifdefined\outputproof
+\begin{proof}
+
+\end{proof}
+\fi
+
+\begin{corollary}
+	Il existe une unique fonction $y \in C(I)$ tel que
+	\begin{equation}
+		\forall t \in I, \, y(t) = x_{0} + \int_{t_{0}}^{t} f(\tau, y(\tau))
+		d\tau
+	\end{equation}
+\end{corollary}
+
+\ifdefined\outputproof
+\begin{proof}
+
+\end{proof}
+\fi
+
+On obtient alors le théorème d'existence locale d'une solution
+
+\ifdefined\outputproof
+\begin{proof} [Théorème d'existence locale d'une solution]
+	On a montré qu'il existe une unique fonction $y : I \rightarrow E$ tel que
+	$y$ est contenue, dont le graphe est contenue dans $T$ et
+
+	\begin{equation}
+		\forall t \in I, \, y(t) = x_{0} + \int_{t_{0}}^{t} f(\tau, y(\tau))
+		d\tau
+	\end{equation}
+
+	Ce qui est équivalent à dire que $y$ est solution de l'équation
+	\ref{eq:existence_sol}.
+\end{proof}
+\fi
+
+\section{Existence et unicité globale d'une solution}
+
+Nous allons montrer que toute solution se prolonge en une solution maximale et
+que dans les hypothèses de localité lipschitzienne et de continuité, cette
+solution est maximale.
+
+Donnons d'abord la définition de solution maximale.
+
+
+\end{document}
